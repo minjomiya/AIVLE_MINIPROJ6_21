@@ -27,8 +27,14 @@ phases:
       - echo "Build completed on $(date)"
 
 artifacts:
-  files:
-    - Frontend/dist/**/*
-    - Backend/bookapp/build/libs/*.jar
-#codedeploy설정    - appspec.yml
-#scripts배포 스크립트    - scripts/**/*
+  secondary-artifacts:
+    FrontendBox:
+      base-directory: 'Frontend/dist/team21-angular-website' # 주의: 로컬에서 빌드해보고 실제 생성되는 dist 안의 폴더명으로 적으세요!
+      files:
+        - '**/*'
+    
+    BackendBox:
+      files:
+        - 'Backend/bookapp/build/libs/*.jar'
+        - 'appspec.yml'
+        - 'scripts/**/*'
