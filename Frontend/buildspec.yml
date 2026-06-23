@@ -3,21 +3,32 @@ version: 0.2
 phases:
   install:
     runtime-versions:
+      java: corretto17
       nodejs: 20
+
+  pre_build:
     commands:
-      # 1. 프론트엔드 폴더 안으로 진입합니다 (가장 중요!)
+      - echo "npm install"
       - cd Frontend
-      # 2. 리액트 패키지들을 설치합니다
       - npm install
+      - cd ..
 
   build:
     commands:
-      - echo Build started on `date`
-      # 3. Vite 기반 리액트 프로젝트를 빌드합니다 (결과물은 dist 폴더에 생성됨)
+      - echo "Build frontend"
+      - cd Frontend
       - npm run build
+      - cd ..
+      - echo "Build backend"
+      - cd Backend/bookapp
+      - chmod +x gradlew
+      - ./gradlew clean build
+      - cd ../..
+      - echo "Build completed on $(date)"
 
 artifacts:
   files:
-    # 4. Frontend/dist 폴더 안의 모든 결과물(html, js, css 등)을 가져갑니다
-    - '**/*'
-  base-directory: Frontend/dist
+    - Frontend/dist/**/*
+    - Backend/bookapp/build/libs/*.jar
+#codedeploy설정    - appspec.yml
+#scripts배포 스크립트    - scripts/**/*
