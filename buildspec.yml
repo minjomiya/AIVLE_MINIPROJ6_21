@@ -1,0 +1,40 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+      nodejs: 20
+
+  pre_build:
+    commands:
+      - echo "npm install"
+      - cd Frontend
+      - npm install
+      - cd ..
+
+  build:
+    commands:
+      - echo "Build frontend"
+      - cd Frontend
+      - npm run build
+      - cd ..
+      - echo "Build backend"
+      - cd Backend/bookapp
+      - chmod +x gradlew
+      - ./gradlew clean build
+      - cd ../..
+      - echo "Build completed on $(date)"
+
+artifacts:
+  secondary-artifacts:
+    FrontendBox:
+      base-directory: 'Frontend/dist' # 주의: 로컬에서 빌드해보고 실제 생성되는 dist 안의 폴더명으로 적으세요!
+      files:
+        - '**/*'
+    
+    BackendBox:
+      files:
+        - 'Backend/bookapp/build/libs/*.jar'
+        - 'appspec.yml'
+        - 'scripts/**/*'
