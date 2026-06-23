@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      # 1. 프론트엔드 폴더 안으로 진입합니다 (가장 중요!)
+      - cd Frontend
+      # 2. 리액트 패키지들을 설치합니다
+      - npm install
+
+  build:
+    commands:
+      - echo Build started on `date`
+      # 3. Vite 기반 리액트 프로젝트를 빌드합니다 (결과물은 dist 폴더에 생성됨)
+      - npm run build
+
+artifacts:
+  files:
+    # 4. Frontend/dist 폴더 안의 모든 결과물(html, js, css 등)을 가져갑니다
+    - '**/*'
+  base-directory: Frontend/dist
