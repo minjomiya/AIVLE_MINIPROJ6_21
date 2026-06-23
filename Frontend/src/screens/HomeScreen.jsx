@@ -59,7 +59,7 @@ function HomeScreen({ books }) {
       }
 
       try {
-        let url = `http://localhost:8080/books/search/category?mainTag=${encodeURIComponent(selectedGenre)}`;
+        let url = `http://3.144.149.46:8080/books/search/category?mainTag=${encodeURIComponent(selectedGenre)}`;
         if (selectedSubTag !== "전체") {
           url += `&subTag=${encodeURIComponent(selectedSubTag)}`;
         }
@@ -93,7 +93,7 @@ function HomeScreen({ books }) {
     }
 
     try {
-      const url = `http://localhost:8080/books/search/detail?title=${encodeURIComponent(searchQuery)}&author=${encodeURIComponent(searchQuery)}`;
+      const url = `http://3.144.149.46:8080/books/search/detail?title=${encodeURIComponent(searchQuery)}&author=${encodeURIComponent(searchQuery)}`;
       const res = await fetch(url);
       if (!res.ok) throw new Error("검색 실패");
       const result = await res.json();
@@ -121,7 +121,7 @@ function HomeScreen({ books }) {
         // 장르 필터 상태 유지
         const fetchByGenre = async () => {
           try {
-            let url = `http://localhost:8080/books/search/category?mainTag=${encodeURIComponent(selectedGenre)}`;
+            let url = `http://3.144.149.46:8080/books/search/category?mainTag=${encodeURIComponent(selectedGenre)}`;
             if (selectedSubTag !== "전체") {
               url += `&subTag=${encodeURIComponent(selectedSubTag)}`;
             }

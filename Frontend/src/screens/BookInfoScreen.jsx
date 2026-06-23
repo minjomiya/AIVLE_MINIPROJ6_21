@@ -20,7 +20,7 @@ function BookInfoScreen({
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/books/${id}`);
+        const res = await fetch(`http://3.144.149.46:8080/books/${id}`);
         if (!res.ok) throw new Error("책을 찾을 수 없습니다.");
         const result = await res.json();
         setBook(result.data);
