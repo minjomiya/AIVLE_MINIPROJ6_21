@@ -30,5 +30,5 @@ artifacts:
   files:
     - Frontend/dist/**/*
     - Backend/bookapp/build/libs/*.jar
-    - appspec.yml
-    - scripts/**/*
+#codedeploy설정    - appspec.yml
+#scripts배포 스크립트    - scripts/**/*
