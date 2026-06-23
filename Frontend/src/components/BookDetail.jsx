@@ -19,7 +19,7 @@ function BookDetail({ book, onUpdateBook, onBack }) {
     try {
       // id만 봐도 되니까
       // json-server 규칙에 맞춰 특정 ID의 데이터만 PATCH로 부분 수정 요청
-      const res = await fetch(`http://localhost:3000/books/${book.id}`, {
+      const res = await fetch(`http://localhost:8080/books/${book.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
