@@ -10,3 +10,26 @@ Backend/bookapp/.gradle/
 
 deploy-artifact/
 
+# ==========================================
+# Frontend Ignore (프론트엔드 관련 무시)
+# ==========================================
+**/Frontend/node_modules/
+**/Frontend/dist/
+.env.local
+.env.development.local
+
+# ==========================================
+# Backend Ignore (백엔드 기본 및 IDE 설정 무시)
+# ==========================================
+**/Backend/.idea/
+**/Backend/.gradle/
+**/Backend/build/
+*.iml
+
+# 백엔드 내부 자동생성 파일들 (경로 최적화)
+**/Backend/.idea/shelf/
+**/Backend/.idea/workspace.xml
+**/Backend/.idea/queries/
+**/Backend/.idea/dataSources/
+**/Backend/.idea/dataSources.local.xml
+**/Backend/.idea/httpRequests/
