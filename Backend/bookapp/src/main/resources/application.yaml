@@ -1,6 +1,9 @@
 # 서버 설정
 server:
   port: 8080
+  tomcat:
+    max-http-form-post-size: 50MB
+    max-swallow-size: 50MB
 
 logging:
   level:
@@ -10,6 +13,10 @@ logging:
 spring:
   application:
     name: bookapp
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   profiles:
     group:
       default: "secret"
