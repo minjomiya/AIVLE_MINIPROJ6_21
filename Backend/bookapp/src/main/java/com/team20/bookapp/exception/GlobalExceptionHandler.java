@@ -13,8 +13,12 @@ public class GlobalExceptionHandler {
     // 400: 잘못된 요청
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleBadRequest(MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult()
+                .getFieldErrors()
+                .get(0)
+                .getDefaultMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                new ApiResponse<>("fail", "잘못된 요청입니다: 입력값을 확인해주세요.")
+                new ApiResponse<>("fail", errorMessage)
         );
     }
 
