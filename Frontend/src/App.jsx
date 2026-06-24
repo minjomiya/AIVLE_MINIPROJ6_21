@@ -10,6 +10,9 @@ import BookDetail from "./components/BookDetail";
 
 const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
 
+const localpath = "http://localhost:8080";
+const serverpath = "http://3.16.15.240:8080";
+
 function App() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +31,7 @@ function App() {
   useEffect(() => {
     async function loadBooks() {
       try {
-        const res = await fetch("http://3.16.15.240:8080/books");
+        const res = await fetch(localpath + "/books");
         if (!res.ok) throw new Error("서버 응답 오류");
         const result = await res.json();
         setBooks(result.data); // ✅ .data 추가
@@ -46,9 +49,10 @@ function App() {
       let subTag = [];
 
       if (apiKey) {
-        console.log('AI 장르 자동 분석 시작');
+        console.log("AI 장르 자동 분석 시작");
 
-        const OPENAI_CHAT_API_URL = "https://api.openai.com/v1/chat/completions";
+        const OPENAI_CHAT_API_URL =
+          "https://api.openai.com/v1/chat/completions";
         const TAG_CATEGORIES = `
         - 소설 : 소설일반, 장편소설, 단편소설, 추리/미스터리, 판타지, SF, 로맨스, 역사소설, 청소년소설, 고전소설
         - 시/에세이 : 시, 에세이, 명상/치유
@@ -110,24 +114,28 @@ function App() {
         console.warn(".env 파일에 API 키가 없어 태그 없이 저장합니다.");
       }
 
-      const genres = genre ? subTag.map(tag => ({
-        mainTag: genre,
-        subTag: tag
-      })) : [];
+      const genres = genre
+        ? subTag.map((tag) => ({
+            mainTag: genre,
+            subTag: tag,
+          }))
+        : [];
 
       const finalBookData = {
         ...newBook,
         genres,
       };
 
-      const res = await fetch("http://3.16.15.240:8080/books", {
+      const res = await fetch(localpath + "/books", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(finalBookData),
       });
 
-      if (res.status === 400) throw new Error("잘못된 요청입니다. 입력값을 확인해주세요.");
-      if (res.status === 500) throw new Error("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      if (res.status === 400)
+        throw new Error("잘못된 요청입니다. 입력값을 확인해주세요.");
+      if (res.status === 500)
+        throw new Error("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
       if (!res.ok) throw new Error("등록 실패");
 
       const result = await res.json();
@@ -140,14 +148,15 @@ function App() {
 
   const handleUpdateBook = async (updatedBook) => {
     try {
-      const res = await fetch(`http://3.16.15.240:8080/books/${updatedBook.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(`${localpath}/books/${updatedBook.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedBook),
       });
 
       if (res.status === 404) throw new Error("수정할 책을 찾을 수 없습니다.");
-      if (res.status === 500) throw new Error("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      if (res.status === 500)
+        throw new Error("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
       if (!res.ok) throw new Error("수정 실패");
 
       const result = await res.json();
@@ -161,12 +170,13 @@ function App() {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
     try {
-      const res = await fetch(`http://3.16.15.240:8080/books/${id}`, {
+      const res = await fetch(`${localpath}/books/${id}`, {
         method: "DELETE",
       });
 
       if (res.status === 404) throw new Error("삭제할 책을 찾을 수 없습니다.");
-      if (res.status === 500) throw new Error("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      if (res.status === 500)
+        throw new Error("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
       if (!res.ok) throw new Error("삭제 실패");
 
       setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
@@ -185,9 +195,10 @@ function App() {
       return;
     }
 
-    console.log('함수 호출');
+    console.log("함수 호출");
     try {
-      const OPENAI_IMAGE_API_URL = "https://api.openai.com/v1/images/generations";
+      const OPENAI_IMAGE_API_URL =
+        "https://api.openai.com/v1/images/generations";
 
       const prompt = `
       매우 상세한 책 표지 이미지를 생성해주세요.
@@ -219,8 +230,10 @@ function App() {
         }),
       });
 
-      if (CreateImage.status === 401) throw new Error("API 키가 유효하지 않습니다.");
-      if (CreateImage.status === 429) throw new Error("요청이 너무 많습니다. 잠시 후 다시 시도해주세요.");
+      if (CreateImage.status === 401)
+        throw new Error("API 키가 유효하지 않습니다.");
+      if (CreateImage.status === 429)
+        throw new Error("요청이 너무 많습니다. 잠시 후 다시 시도해주세요.");
       if (!CreateImage.ok) throw new Error("OpenAI 요청 실패");
 
       let responseData;
@@ -231,12 +244,13 @@ function App() {
       }
 
       const b64Image = responseData.data[0].b64_json;
-      if (!b64Image) throw new Error("이미지 데이터가 응답에 포함되어 있지 않습니다.");
+      if (!b64Image)
+        throw new Error("이미지 데이터가 응답에 포함되어 있지 않습니다.");
 
       const imageUrl = `data:image/png;base64,${b64Image}`;
 
       const updateRes = await fetch(
-        `http://3.16.15.240:8080/books/${selectedBook.id}/cover`,
+        `${localpath}/books/${selectedBook.id}/cover`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -246,14 +260,16 @@ function App() {
         },
       );
 
-      if (updateRes.status === 404) throw new Error("업데이트할 책을 찾을 수 없습니다.");
-      if (updateRes.status === 500) throw new Error("서버 오류가 발생했습니다.");
+      if (updateRes.status === 404)
+        throw new Error("업데이트할 책을 찾을 수 없습니다.");
+      if (updateRes.status === 500)
+        throw new Error("서버 오류가 발생했습니다.");
       if (!updateRes.ok) throw new Error("책 정보 업데이트 실패");
 
       const updateResult = await updateRes.json();
       setBooks((prevBooks) =>
-        prevBooks.map((book) =>
-          book.id === selectedBook.id ? updateResult.data : book, // ✅ .data 추가
+        prevBooks.map(
+          (book) => (book.id === selectedBook.id ? updateResult.data : book), // ✅ .data 추가
         ),
       );
       setCurrentBook(updateResult.data); // ✅ .data 추가
@@ -266,7 +282,7 @@ function App() {
 
   return (
     <>
-      <Header/>
+      <Header />
       <Routes>
         <Route path="/" element={<HomeScreen books={books} />} />
         <Route
@@ -279,8 +295,14 @@ function App() {
             />
           }
         />
-        <Route path="/addbook" element={<BookAddScreen onAddBook={handleAddBook} />} />
-        <Route path="/editbook/:id" element={<BookEditScreen onUpdateBook={handleUpdateBook} />} />
+        <Route
+          path="/addbook"
+          element={<BookAddScreen onAddBook={handleAddBook} />}
+        />
+        <Route
+          path="/editbook/:id"
+          element={<BookEditScreen onUpdateBook={handleUpdateBook} />}
+        />
       </Routes>
     </>
   );
