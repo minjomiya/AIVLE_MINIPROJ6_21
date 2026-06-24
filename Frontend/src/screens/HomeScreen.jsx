@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import BookList from "../components/BookList";
+import TodayBook from "../components/TodayBook";
 import { useState, useEffect } from "react";
 
 // 대분류 - 소분류 데이터
@@ -162,6 +163,8 @@ function HomeScreen({ books }) {
           + 새 도서 등록
         </button>
       </div>
+
+      <TodayBook books={books} />
 
       <div className="genre-filter">
         {/* 대분류 드롭다운 */}
