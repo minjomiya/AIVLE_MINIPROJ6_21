@@ -1,0 +1,25 @@
+version: 0.0
+os: linux
+files:
+  # 1. BackendBox 안에 패키징된 백엔드 jar 파일을 EC2의 app 폴더로 복사
+  # jar 파일을 ec2-user의 홈 폴더로 복사
+  - source: Backend/bookapp/build/libs/
+    destination: /home/ec2-user/app/
+
+  # 2. 배포 스크립트 폴더(deploy-scripts)도 EC2의 app 폴더 안으로 복사
+  # 스크립트 파일도 ec2-user의 홈 폴더로 복사
+  - source: deploy-scripts/
+    destination: /home/ec2-user/app/deploy-scripts/
+
+permissions:
+  # 소유자를 ec2-user로 변경
+  - object: /home/ec2-user/app/
+    pattern: '**'
+    mode: '0755'
+    owner: ec2-user
+    group: ec2-user
+
+hooks:
+  ApplicationStart:
+    - location: deploy-scripts/application-start-hook.sh
+      timeout: 300

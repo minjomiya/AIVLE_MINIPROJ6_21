@@ -28,7 +28,7 @@ function App() {
   useEffect(() => {
     async function loadBooks() {
       try {
-        const res = await fetch("http://localhost:8080/books");
+        const res = await fetch("http://3.16.15.240:8080/books");
         if (!res.ok) throw new Error("서버 응답 오류");
         const result = await res.json();
         setBooks(result.data); // ✅ .data 추가
@@ -120,7 +120,7 @@ function App() {
         genres,
       };
 
-      const res = await fetch("http://localhost:8080/books", {
+      const res = await fetch("http://3.16.15.240:8080/books", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(finalBookData),
@@ -140,7 +140,7 @@ function App() {
 
   const handleUpdateBook = async (updatedBook) => {
     try {
-      const res = await fetch(`http://localhost:8080/books/${updatedBook.id}`, {
+      const res = await fetch(`http://3.16.15.240:8080/books/${updatedBook.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedBook),
@@ -161,7 +161,7 @@ function App() {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
     try {
-      const res = await fetch(`http://localhost:8080/books/${id}`, {
+      const res = await fetch(`http://3.16.15.240:8080/books/${id}`, {
         method: "DELETE",
       });
 
@@ -236,7 +236,7 @@ function App() {
       const imageUrl = `data:image/png;base64,${b64Image}`;
 
       const updateRes = await fetch(
-        `http://localhost:8080/books/${selectedBook.id}/cover`,
+        `http://3.16.15.240:8080/books/${selectedBook.id}/cover`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
