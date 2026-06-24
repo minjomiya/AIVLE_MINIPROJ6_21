@@ -15,6 +15,7 @@ function BookDetail({ book, onUpdateBook, onBack }) {
       return;
     }
 
+    //test
     try {
       // id만 봐도 되니까
       // json-server 규칙에 맞춰 특정 ID의 데이터만 PATCH로 부분 수정 요청
