@@ -19,7 +19,7 @@ fi
 
 # 4. 새로운 jar 파일 찾아 실행하기 (백그라운드 구동)
 echo ">>> 새 백엔드 애플리케이션을 구동합니다."
-JAR_NAME=$(ls -tr *.jar | tail -n 1)
+JAR_NAME=$(ls -tr *.jar | grep -v plain | tail -n 1)
 
 # 기존 코드
 # nohup java -jar $JAR_NAME > /home/ec2-user/app/app.log 2>&1 &
