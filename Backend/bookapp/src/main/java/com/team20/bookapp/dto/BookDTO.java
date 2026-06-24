@@ -37,6 +37,9 @@ public class BookDTO {
 
     private List<GenreInfo> genres;
 
+    private int likeCount;                       // 이 책의 총 좋아요 수
+    private List<ReviewResponse> reviews;        // 이 책에 달린 리뷰 목록
+
     // 오버로딩: 전체 조회/상세 조회
     public static BookDTO from(Book b){
         return from(b, null);
@@ -59,6 +62,10 @@ public class BookDTO {
                                 .subTag(btm.getSubTag())    // BookTagMap field에서 바로 꺼내오도록 변경
                                 .build())
                         .collect(Collectors.toList()))
+                .likeCount(b.getBookLikes() == null ? 0 : b.getBookLikes().size())
+                .reviews(b.getReviews() == null ? List.of() : b.getReviews().stream()
+                        .map(ReviewResponse::from)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
@@ -72,5 +79,25 @@ public class BookDTO {
     public static class GenreInfo {
         private String mainTag; // 대분류
         private String subTag;   // 소분류
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class ReviewResponse {
+        private Long reviewId;
+        private String writerName;  // 작성자 이름 (User 엔티티에서 추출)
+        private String content;
+        private LocalDateTime createdAt;
+
+        public static ReviewResponse from(com.team20.bookapp.domain.Review review) {
+            return ReviewResponse.builder()
+                    .reviewId(review.getRid())
+                    .writerName(review.getUser().getName()) // 연동된 유저의 이름 가져오기
+                    .content(review.getContent())
+                    .createdAt(review.getCreatedAt())
+                    .build();
+        }
     }
 }

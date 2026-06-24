@@ -79,4 +79,10 @@ public class Book {
         }
     }
 
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookLike> bookLikes = new ArrayList<>();
+
 }
