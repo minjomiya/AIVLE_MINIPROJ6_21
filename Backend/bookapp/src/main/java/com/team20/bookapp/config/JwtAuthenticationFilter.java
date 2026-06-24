@@ -26,7 +26,7 @@ public class JwtAuthenticationFilter implements Filter {
         String path = httpRequest.getRequestURI();
 
         // 회원가입과 로그인은 토큰 없이도 무조건 통과
-        if (path.startsWith("/users/signup") || path.startsWith("/users/login") || path.startsWith("/books") || httpRequest.getMethod().equals("OPTIONS")) {
+        if (path.startsWith("/users/signup") || path.startsWith("/users/login") || path.endsWith("/books") || httpRequest.getMethod().equals("OPTIONS")) {
             chain.doFilter(request, response);
             return;
         }

@@ -25,4 +25,5 @@ public class Review {
     private String content;
 
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

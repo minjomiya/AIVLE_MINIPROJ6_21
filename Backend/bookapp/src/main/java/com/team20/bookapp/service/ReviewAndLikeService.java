@@ -58,4 +58,30 @@ public class ReviewAndLikeService {
                         }
                 );
     }
+
+    @Transactional
+    public void deleteReview(Long uid, Long reviewId) {
+        // 1. 삭제할 리뷰가 실제로 존재하는지 조회
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰입니다."));
+
+        if (!review.getUser().getUid().equals(uid)) { // 👈 getId()에서 getUid()로 변경!
+            throw new IllegalArgumentException("본인이 작성한 리뷰만 삭제할 수 있습니다.");
+        }
+
+        reviewRepository.delete(review);
+    }
+
+    @Transactional
+    public void updateReview(Long uid, Long reviewId, String newContent) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰입니다."));
+
+        if (!review.getUser().getUid().equals(uid)) {
+            throw new IllegalArgumentException("본인이 작성한 리뷰만 수정할 수 있습니다.");
+        }
+
+        review.setContent(newContent);
+        review.setUpdatedAt(java.time.LocalDateTime.now());
+    }
 }

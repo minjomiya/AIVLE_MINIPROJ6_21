@@ -3,6 +3,7 @@ package com.team20.bookapp.controller;
 import com.team20.bookapp.dto.UserProfileResponseDTO;
 import com.team20.bookapp.dto.UserRequestDTO;
 import com.team20.bookapp.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,11 @@ public class UserController {
     }
 
     /** 마이페이지 조회 API */
-    @GetMapping("/{uid}/profile")
-    public ResponseEntity<UserProfileResponseDTO> getProfile(@PathVariable("uid") Long uid) {
-        UserProfileResponseDTO response = userService.getMyProfile(uid);
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileResponseDTO> getProfile(HttpServletRequest request) {
+        Long authenticatedUid = (Long) request.getAttribute("authenticatedUid");
+
+        UserProfileResponseDTO response = userService.getMyProfile(authenticatedUid);
         return ResponseEntity.ok(response);
     }
 }
