@@ -17,12 +17,14 @@ public class UserProfileResponseDTO {
     private String name;
     private String email;
 
+    private String token;
+
     // 내가 작성한 리뷰 요약 목록
     private List<MyReviewInfo> myReviews;
     // 내가 좋아요 한 도서 요약 목록
     private List<LikedBookInfo> myLikedBooks;
 
-    public static UserProfileResponseDTO from(User user) {
+    public static UserProfileResponseDTO from(User user, String token) {
         return UserProfileResponseDTO.builder()
                 .userId(user.getUid())
                 .name(user.getName())
@@ -38,6 +40,7 @@ public class UserProfileResponseDTO {
                         bl.getBook().getTitle(),
                         bl.getBook().getCoverImageUrl()
                 )).collect(Collectors.toList()))
+                .token(token)
                 .build();
     }
 

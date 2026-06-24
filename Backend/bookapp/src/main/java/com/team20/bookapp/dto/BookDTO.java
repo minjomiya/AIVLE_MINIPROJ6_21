@@ -38,7 +38,9 @@ public class BookDTO {
 
     private List<GenreInfo> genres;
 
+    @Builder.Default
     private Integer likeCount = 0;                       // 이 책의 총 좋아요 수
+
     private List<ReviewResponse> reviews;        // 이 책에 달린 리뷰 목록
 
     // 오버로딩: 전체 조회/상세 조회

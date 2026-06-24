@@ -7,6 +7,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -37,5 +40,15 @@ public class GlobalExceptionHandler {
                 new ApiResponse<>("error", "서버 오류가 발생했습니다.")
         );
     }
-    //test
+
+
+
+    /** email 중복 예외 */
+    @ExceptionHandler(EmailDuplicateException.class)
+    public ResponseEntity<Map<String, String>> handleEmailDuplicate(EmailDuplicateException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "error");
+        response.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 }

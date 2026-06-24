@@ -3,16 +3,19 @@ package com.team20.bookapp.service;
 import com.team20.bookapp.domain.User;
 import com.team20.bookapp.dto.UserRequestDTO;
 import com.team20.bookapp.dto.UserProfileResponseDTO;
+import com.team20.bookapp.exception.EmailDuplicateException;
 import com.team20.bookapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.team20.bookapp.config.JwtUtil;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     /** 회원가입 */
     @Transactional
@@ -20,7 +23,7 @@ public class UserService {
         // 이메일 중복 검사
         userRepository.findByEmail(request.getEmail())
                 .ifPresent(user -> {
-                    throw new IllegalArgumentException("이미 가입된 이메일입니다. email=" + request.getEmail());
+                    throw new EmailDuplicateException("이미 가입된 이메일입니다. email=" + request.getEmail());
                 });
 
         User user = new User();
@@ -46,7 +49,10 @@ public class UserService {
         }
 
         // 로그인 성공 시 프로필 정보 반환
-        return UserProfileResponseDTO.from(user);
+        String token = jwtUtil.createToken(user.getUid());
+
+        // 💡 3. 새로 만든 1단계 DTO 변환 메서드에 토큰을 같이 쥐여서 반환합니다.
+        return UserProfileResponseDTO.from(user, token);
     }
 
     /** 마이페이지 조회 */
@@ -54,6 +60,6 @@ public class UserService {
     public UserProfileResponseDTO getMyProfile(Long uid) {
         User user = userRepository.findById(uid)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다. id=" + uid));
-        return UserProfileResponseDTO.from(user);
+        return UserProfileResponseDTO.from(user, null);
     }
 }
