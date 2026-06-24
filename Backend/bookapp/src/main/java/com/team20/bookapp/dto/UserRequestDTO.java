@@ -20,6 +20,7 @@ public class UserRequestDTO {
         @NotBlank(message = "비밀번호는 필수입니다.")
         private String password;
 
+        @NotBlank(message = "생년월일은 필수입니다.")
         private LocalDate birthDate;
     }
 
