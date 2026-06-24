@@ -1,19 +1,24 @@
 version: 0.0
 os: linux
 files:
-  - source: dist/my-angular-project
-    destination: /var/www/my-angular-project
+  # 1. BackendBox 안에 패키징된 백엔드 jar 파일을 EC2의 app 폴더로 복사
+  - source: Backend/bookapp/build/libs/
+    destination: /home/ubuntu/app/
+  
+  # 2. 배포 스크립트 폴더(deploy-scripts)도 EC2의 app 폴더 안으로 복사
+  - source: deploy-scripts/
+    destination: /home/ubuntu/app/deploy-scripts/
+
 permissions:
-  - object: /var/www/my-angular-project
+  # 실행 권한 및 소유자 설정
+  - object: /home/ubuntu/app/
     pattern: '**'
     mode: '0755'
-    owner: root
-    group: root
-    type:
-      - file
-      - directory
+    owner: ubuntu
+    group: ubuntu
+
 hooks:
+  # 파일 복사가 끝난 후 백엔드 서버를 켜는 스크립트 실행
   ApplicationStart:
     - location: deploy-scripts/application-start-hook.sh
       timeout: 300
-      
