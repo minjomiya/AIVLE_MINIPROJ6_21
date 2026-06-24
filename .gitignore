@@ -10,8 +10,8 @@
 # Backend Ignore (백엔드 기본 및 IDE 설정 무시)
 # ==========================================
 **/Backend/.idea/
-**/Backend/.gradle/
-**/Backend/build/
+**/Backend/bookapp/.gradle/
+**/Backend/bookapp/build/
 *.iml
 
 # 백엔드 내부 자동생성 파일들 (경로 최적화)
@@ -21,3 +21,15 @@
 **/Backend/.idea/dataSources/
 **/Backend/.idea/dataSources.local.xml
 **/Backend/.idea/httpRequests/
+
+
+*.class
+*.bin
+*.uniqueId*
+*.iml
+
+
+.env
+*.local
+
+desktop.ini

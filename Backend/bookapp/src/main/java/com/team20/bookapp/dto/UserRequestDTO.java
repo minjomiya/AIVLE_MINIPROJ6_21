@@ -2,6 +2,7 @@ package com.team20.bookapp.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ public class UserRequestDTO {
         @NotBlank(message = "비밀번호는 필수입니다.")
         private String password;
 
-        @NotBlank(message = "생년월일은 필수입니다.")
+        @NotNull(message = "생년월일은 필수 입력 항목입니다.")
         private LocalDate birthDate;
     }
 
