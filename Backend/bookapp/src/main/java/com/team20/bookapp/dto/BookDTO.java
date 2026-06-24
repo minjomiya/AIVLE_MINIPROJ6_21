@@ -5,6 +5,7 @@
 package com.team20.bookapp.dto;
 
 import com.team20.bookapp.domain.Book;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank; // 필수 import
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +38,7 @@ public class BookDTO {
 
     private List<GenreInfo> genres;
 
-    private int likeCount;                       // 이 책의 총 좋아요 수
+    private Integer likeCount = 0;                       // 이 책의 총 좋아요 수
     private List<ReviewResponse> reviews;        // 이 책에 달린 리뷰 목록
 
     // 오버로딩: 전체 조회/상세 조회
