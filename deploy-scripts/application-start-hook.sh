@@ -27,4 +27,29 @@ JAR_NAME=$(ls -tr *.jar | grep -v plain | tail -n 1)
 # 변경한 코드 (/usr/bin/java 절대 경로 지정)
 nohup /usr/bin/java -jar $JAR_NAME > /home/ec2-user/app/app.log 2>&1 &
 
+echo ">>> Apply nginx config"
+cat > /etc/nginx/conf.d/bookapp.conf <<'EOF'
+server {
+    listen 80;
+    server_name _;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location /books {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+EOF
+
+nginx -t && systemctl restart nginx
+
 echo ">>> 백엔드 배포 스크립트 완료"

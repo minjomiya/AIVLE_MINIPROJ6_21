@@ -13,6 +13,8 @@
 **/Backend/.gradle/
 **/Backend/build/
 *.iml
+**/.gradle/
+**/build/
 
 # 백엔드 내부 자동생성 파일들 (경로 최적화)
 **/Backend/.idea/shelf/

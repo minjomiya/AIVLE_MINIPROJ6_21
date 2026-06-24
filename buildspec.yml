@@ -35,6 +35,7 @@ artifacts:
     
     BackendBox:
       files:
+        - 'Frontend/dist/**/*'
         - 'Backend/bookapp/build/libs/*.jar'
         - 'appspec.yml'
         - 'deploy-scripts/**/*'
