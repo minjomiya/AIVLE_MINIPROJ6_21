@@ -123,11 +123,11 @@ const MyPageSidebar = ({ activeTab, setActiveTab }) => {
       <div>
         <h3>회원정보 수정</h3>
         <div
-          onClick={() => setActiveTab("password")}
-          className={`menu-item ${activeTab === "password" ? "active" : ""}`}
+          onClick={() => setActiveTab("profileEdit")}
+          className={`menu-item ${activeTab === "profileEdit" ? "active" : ""}`}
           style={{ cursor: "pointer" }}
         >
-          비밀번호 변경
+          회원정보 수정
         </div>
         <br />
         <div onClick={handleDirectWithdraw} style={{ cursor: "pointer" }}>
