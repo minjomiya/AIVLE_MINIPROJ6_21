@@ -1,0 +1,110 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  min-height: 80vh;
+  background-color: var(--bg-main); /* App.css의 메인 배경색 활용 */
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  border-radius: 16px;
+  background-color: var(--bg-card); /* 기존 카드 배경색 활용 */
+  border: 1px solid var(--border-tag);
+  box-shadow: 0 4px 15px var(--shadow-card-hover, rgba(0, 0, 0, 0.05));
+}
+
+.login-title {
+  margin: 0 0 8px 0;
+  text-align: center;
+  color: var(--text-brown); /* 기존 책방 텍스트 컬러 활용 */
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.login-subtitle {
+  margin: 0 0 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-input);
+  background-color: var(--bg-white);
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.login-input:focus {
+  border-color: var(--header-bg);
+}
+
+.error-text {
+  color: var(--btn-delete, red);
+  font-size: 13px;
+  margin: 0 0 16px 0;
+  font-weight: 500;
+}
+
+.login-submit-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--btn-primary); /* 버튼 컬러 통일 */
+  color: var(--header-text);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.login-submit-btn:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+.login-submit-btn:disabled {
+  background-color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+.login-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.signup-link-btn {
+  background: none;
+  border: none;
+  color: var(--btn-search);
+  font-weight: 700;
+  margin-left: 6px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}

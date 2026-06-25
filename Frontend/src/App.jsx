@@ -9,9 +9,7 @@ import BookForm from "./components/BookForm";
 import BookDetail from "./components/BookDetail";
 
 const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-
-const localpath = "http://localhost:8080";
-const serverpath = "http://3.16.15.240:8080";
+const path = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -31,7 +29,7 @@ function App() {
   useEffect(() => {
     async function loadBooks() {
       try {
-        const res = await fetch(localpath + "/books");
+        const res = await fetch(path + "/books");
         if (!res.ok) throw new Error("서버 응답 오류");
         const result = await res.json();
         setBooks(result.data); // ✅ .data 추가
@@ -126,7 +124,7 @@ function App() {
         genres,
       };
 
-      const res = await fetch(localpath + "/books", {
+      const res = await fetch(path + "/books", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(finalBookData),
@@ -148,7 +146,7 @@ function App() {
 
   const handleUpdateBook = async (updatedBook) => {
     try {
-      const res = await fetch(`${localpath}/books/${updatedBook.id}`, {
+      const res = await fetch(`${path}/books/${updatedBook.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedBook),
@@ -170,7 +168,7 @@ function App() {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
     try {
-      const res = await fetch(`${localpath}/books/${id}`, {
+      const res = await fetch(`${path}/books/${id}`, {
         method: "DELETE",
       });
 
@@ -250,7 +248,7 @@ function App() {
       const imageUrl = `data:image/png;base64,${b64Image}`;
 
       const updateRes = await fetch(
-        `${localpath}/books/${selectedBook.id}/cover`,
+        `${path}/books/${selectedBook.id}/cover`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
