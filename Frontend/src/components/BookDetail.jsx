@@ -7,8 +7,7 @@ function BookDetail({ book, onUpdateBook, onBack }) {
   const [editAuthor, setEditAuthor] = useState(book.author);
   const [editContent, setEditContent] = useState(book.content);
 
-  const localpath = "http://localhost:8080";
-  const serverpath = "http://3.16.15.240:8080";
+  const path = import.meta.env.VITE_API_BASE_URL;
 
   // 2. 서버에 PATCH 요청을 보내는 비동기 함수
   const handleSaveUpdate = async () => {
@@ -21,7 +20,7 @@ function BookDetail({ book, onUpdateBook, onBack }) {
     try {
       // id만 봐도 되니까
       // json-server 규칙에 맞춰 특정 ID의 데이터만 PATCH로 부분 수정 요청
-      const res = await fetch(`${localpath}/books/${book.id}`, {
+      const res = await fetch(`${path}/books/${book.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
