@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // 💡 페이지 이동을 위한 훅 추가
 
-const LoginScreen = () => {
+const LoginScreen = ({ setIsLoggedIn }) => {
   // 💡 더 이상 상위 컴포넌트에서 프롭스를 받지 않음!
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,7 +31,6 @@ const LoginScreen = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      // 💡 중요: 500 에러가 나더라도 백엔드가 준 텍스트/JSON 데이터가 있는지 먼저 봅니다.
       let data = null;
       try {
         data = await response.json();
@@ -40,10 +39,18 @@ const LoginScreen = () => {
       }
 
       if (response.ok) {
-        // 200 OK 성공 시
-        localStorage.setItem("token", data?.token);
-        alert("로그인에 성공했습니다!");
-        navigate("/");
+        const token = data?.token || data?.data?.token;
+
+        if (token) {
+          localStorage.setItem("token", token);
+          setIsLoggedIn(true); // 이제 새로고침 없이 헤더 버튼이 즉시 바뀝니다!
+
+          alert("로그인에 성공했습니다.");
+          navigate("/");
+        } else {
+          console.error("서버 응답 성공했으나 토큰이 없습니다:", data);
+          setErrorMessage("서버 응답에 토큰 정보가 누락되었습니다.");
+        }
       } else {
         // 💡 response.ok가 아닐 때 (500, 400 등 에러 코드일 때)
         // 백엔드에서 준 data.message가 존재한다면 "존재하지 않는 이메일입니다."를 그대로 세팅!

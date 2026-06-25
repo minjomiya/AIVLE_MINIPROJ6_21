@@ -20,6 +20,15 @@ function App() {
   const [error, setError] = useState(null);
   const [currentBook, setCurrentBook] = useState(null);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const handleFetchError = (err, defaultMessage) => {
     console.error(err);
     if (err.message === "Failed to fetch") {
@@ -280,7 +289,7 @@ function App() {
 
   return (
     <>
-      <Header />
+      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <Routes>
         <Route path="/" element={<HomeScreen books={books} />} />
         <Route
@@ -302,7 +311,10 @@ function App() {
           element={<BookEditScreen onUpdateBook={handleUpdateBook} />}
         />
 
-        <Route path="/login" element={<LoginScreen />} />
+        <Route
+          path="/login"
+          element={<LoginScreen setIsLoggedIn={setIsLoggedIn} />}
+        />
         <Route path="/signup" element={<SignupScreen />} />
         <Route path="/profile" element={<MyPageScreen />} />
       </Routes>

@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Header() {
+function Header({ isLoggedIn, setIsLoggedIn }) {
   const [isDark, setIsDark] = useState(false);
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // 초기 로드 시 localStorage에서 테마 불러오기
   useEffect(() => {
@@ -12,11 +11,6 @@ function Header() {
     if (savedTheme === "dark") {
       setIsDark(true);
       document.documentElement.setAttribute("data-theme", "dark");
-    }
-
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
     }
   }, []);
 
