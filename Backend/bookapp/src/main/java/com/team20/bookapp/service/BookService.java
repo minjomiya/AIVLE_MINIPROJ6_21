@@ -5,6 +5,7 @@ import com.team20.bookapp.domain.BookTagMap;
 import com.team20.bookapp.domain.Genre;
 import com.team20.bookapp.dto.BookDTO;
 import com.team20.bookapp.exception.BookNotFoundException;
+import com.team20.bookapp.repository.BookLikeRepository;
 import com.team20.bookapp.repository.BookRepository;
 import com.team20.bookapp.repository.GenreRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,23 +25,41 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final GenreRepository genreRepository;
+    private final BookLikeRepository bookLikeRepository;
     // ===== 조회 (readOnly = true → 변경 감지 생략, 성능 향상) =====
     // Repository는 Book 엔티티를 돌려주므로, 바깥으로 내보내기 전에
     // BookDTO.from(...) 으로 변환해서 반환한다.
 
     /** ID로 특정 책 조회 (없으면 404 변환용 예외) */
     @Transactional(readOnly = true)
-    public BookDTO findById(Long bid) {
+    public BookDTO findById(Long bid, Long uid) {
         Book book = bookRepository.findById(bid)
                 .orElseThrow(() -> new BookNotFoundException("해당 도서를 찾을 수 없습니다. id=" + bid));
-        return BookDTO.from(book);
+
+        boolean isLiked = false;
+        if (uid != null) {
+            isLiked = bookLikeRepository.existsByUserUidAndBookBid(uid, bid);
+        }
+
+        // 3. 새로 보완한 BookDTO 오버로딩 메서드를 통해 정보와 상태(true/false)를 쥐여서 반환
+        return BookDTO.from(book, isLiked);
     }
 
     /** 전체 책 목록 조회 */
     @Transactional(readOnly = true)
-    public List<BookDTO> findAll() {
+    public List<BookDTO> findAll(Long uid) {
+        System.out.println("=======> 전체조회 진입! 현재 받아온 uid 확인: " + uid);
+
         return bookRepository.findAll().stream()
-                .map(BookDTO::from)
+                .map(book -> {
+                    boolean isLiked = false;
+
+                    if (uid != null) {
+                        isLiked = bookLikeRepository.existsByUserUidAndBookBid(uid, book.getBid());
+                    }
+
+                    return BookDTO.from(book, isLiked);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -203,6 +222,7 @@ public class BookService {
             }
         }
          */
+
 
         return BookDTO.from(existing);
     }

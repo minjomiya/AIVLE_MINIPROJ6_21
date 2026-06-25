@@ -4,6 +4,7 @@
 
 package com.team20.bookapp.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.team20.bookapp.domain.Book;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank; // 필수 import
@@ -41,15 +42,22 @@ public class BookDTO {
     @Builder.Default
     private Integer likeCount = 0;                       // 이 책의 총 좋아요 수
 
+    @JsonProperty("isLike")
+    private Boolean isLiked;
+
     private List<ReviewResponse> reviews;        // 이 책에 달린 리뷰 목록
 
     // 오버로딩: 전체 조회/상세 조회
     public static BookDTO from(Book b){
-        return from(b, null);
+        return from(b, false);
+    }
+
+    public static BookDTO from(Book b, boolean isLiked) {
+        return from(b, null, isLiked);
     }
 
     // 오버로딩: 장르에 따른 조회
-    public static BookDTO from(Book b, String subTag){
+    public static BookDTO from(Book b, String subTag, boolean isLiked){
         return BookDTO.builder()
                 .id(b.getBid())
                 .title(b.getTitle())
@@ -66,6 +74,7 @@ public class BookDTO {
                                 .build())
                         .collect(Collectors.toList()))
                 .likeCount(b.getBookLikes() == null ? 0 : b.getBookLikes().size())
+                .isLiked(isLiked)
                 .reviews(b.getReviews() == null ? List.of() : b.getReviews().stream()
                         .map(ReviewResponse::from)
                         .collect(Collectors.toList()))

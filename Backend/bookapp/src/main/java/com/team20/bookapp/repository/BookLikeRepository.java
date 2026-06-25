@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface BookLikeRepository extends JpaRepository<BookLike, Long> {
     Optional<BookLike> findByUserUidAndBookBid(Long uid, Long bid);
+
+    boolean existsByUserUidAndBookBid(Long uid, Long bid);
 }

@@ -4,6 +4,7 @@ import com.team20.bookapp.common.ApiResponse;
 import com.team20.bookapp.dto.BookDTO;
 import com.team20.bookapp.service.BookService;
 import com.team20.bookapp.service.GenreService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,8 +27,11 @@ public class BookController {
     // =====================================================================
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<BookDTO>>> getAll() {
-        List<BookDTO> books = bookService.findAll();
+    public ResponseEntity<ApiResponse<List<BookDTO>>> getAll(HttpServletRequest request) {
+
+        Long uid = (Long) request.getAttribute("authenticatedUid");
+
+        List<BookDTO> books = bookService.findAll(uid);
 
         return ResponseEntity.ok(
                 new ApiResponse<>("success", "도서 목록 조회 성공", books)
@@ -35,8 +39,13 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<BookDTO>> getBook(@PathVariable Long id) {
-        BookDTO book = bookService.findById(id);
+    public ResponseEntity<ApiResponse<BookDTO>> getBook(
+            @PathVariable("id") Long id,
+            HttpServletRequest request) {
+
+        Long uid = (Long) request.getAttribute("authenticatedUid");
+
+        BookDTO book = bookService.findById(id, uid);
 
         return ResponseEntity.ok(
                 new ApiResponse<>("success", "도서 상세 조회 성공", book)

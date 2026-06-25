@@ -30,7 +30,7 @@ public class GenreService {
 
         // BookDTO 오버로딩 메서드 파라미터 변경으로 인한 리팩토링
         return genreRepository.findByFilter(targetMain, targetSub).stream()
-                .map(book -> BookDTO.from(book, targetSub))
+                .map(book -> BookDTO.from(book, targetSub, false))
                 .collect(Collectors.toList());
     }
 }
