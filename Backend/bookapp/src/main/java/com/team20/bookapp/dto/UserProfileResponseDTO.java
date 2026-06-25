@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +18,7 @@ public class UserProfileResponseDTO {
     private Long userId;
     private String name;
     private String email;
-
+    private LocalDate birthDate;
     private String token;
 
     // 내가 작성한 리뷰 요약 목록
@@ -29,6 +31,7 @@ public class UserProfileResponseDTO {
                 .userId(user.getUid())
                 .name(user.getName())
                 .email(user.getEmail())
+                .birthDate(user.getBirthDate())
                 .myReviews(user.getReviews().stream().map(r -> new MyReviewInfo(
                         r.getRid(),
                         r.getBook().getBid(),
