@@ -243,7 +243,7 @@ label {
   font-weight: 700;
   color: var(--text-brown);
   display: inline-block;
-  width: 60px;
+  width: auto;
   margin-bottom: 12px;
 }
 
@@ -734,4 +734,15 @@ button[type="delete"] {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.auth-btn {
+  padding: 6px 12px;
+  margin-right: 8px;
+  background-color: var(--btn-primary);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
 }

@@ -7,6 +7,9 @@ import BookAddScreen from "./screens/BookAddScreen";
 import Header from "./components/Header";
 import BookForm from "./components/BookForm";
 import BookDetail from "./components/BookDetail";
+import LoginScreen from "./screens/LoginScreen";
+import SignupScreen from "./screens/SignupScreen";
+import MyPageScreen from "./screens/MyPageScreen";
 
 const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
 const path = import.meta.env.VITE_API_BASE_URL;
@@ -247,16 +250,13 @@ function App() {
 
       const imageUrl = `data:image/png;base64,${b64Image}`;
 
-      const updateRes = await fetch(
-        `${path}/books/${selectedBook.id}/cover`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            coverImageUrl: imageUrl,
-          }),
-        },
-      );
+      const updateRes = await fetch(`${path}/books/${selectedBook.id}/cover`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          coverImageUrl: imageUrl,
+        }),
+      });
 
       if (updateRes.status === 404)
         throw new Error("업데이트할 책을 찾을 수 없습니다.");
@@ -301,6 +301,10 @@ function App() {
           path="/editbook/:id"
           element={<BookEditScreen onUpdateBook={handleUpdateBook} />}
         />
+
+        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/signup" element={<SignupScreen />} />
+        <Route path="/profile" element={<MyPageScreen />} />
       </Routes>
     </>
   );

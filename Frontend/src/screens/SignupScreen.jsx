@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // 💡 페이지 이동을 위한 훅 추가
+import { Link, useNavigate } from "react-router-dom";
 
-const LoginScreen = () => {
-  // 💡 더 이상 상위 컴포넌트에서 프롭스를 받지 않음!
+const SignupScreen = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [birthdate, setBirthdate] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate(); // 💡 이동 함수 선언
+  const navigate = useNavigate();
   const path = import.meta.env.VITE_API_BASE_URL;
 
   const handleSubmit = async (e) => {
@@ -16,42 +17,37 @@ const LoginScreen = () => {
     setErrorMessage("");
     setIsLoading(true);
 
-    if (!email || !password) {
-      setErrorMessage("이메일과 비밀번호를 모두 입력해주세요.");
+    if (!name || !email || !password || !birthdate) {
+      setErrorMessage("모든 필드를 입력해주세요.");
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await fetch(`${path}/users/login`, {
+      const response = await fetch(`${path}/users/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password, birthDate: birthdate }),
       });
 
-      // 💡 중요: 500 에러가 나더라도 백엔드가 준 텍스트/JSON 데이터가 있는지 먼저 봅니다.
       let data = null;
       try {
         data = await response.json();
       } catch (parseError) {
-        console.warn("백엔드가 JSON 형식의 에러 메시지를 주지 않았습니다.");
+        console.warn("백엔드가 JSON 형식의 메시지를 주지 않았습니다.");
       }
 
       if (response.ok) {
-        // 200 OK 성공 시
-        localStorage.setItem("token", data?.token);
-        alert("로그인에 성공했습니다!");
-        navigate("/");
+        alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
+        navigate("/login");
       } else {
-        // 💡 response.ok가 아닐 때 (500, 400 등 에러 코드일 때)
-        // 백엔드에서 준 data.message가 존재한다면 "존재하지 않는 이메일입니다."를 그대로 세팅!
         if (data && data.message) {
           setErrorMessage(data.message);
         } else {
           setErrorMessage(
-            "로그인에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요.",
+            "회원가입에 실패했습니다. 입력 정보를 다시 확인해주세요.",
           );
         }
       }
@@ -67,7 +63,29 @@ const LoginScreen = () => {
     <div>
       <div className="page-container">
         <Link to="/">← 목록으로 돌아가기</Link>
+
         <form onSubmit={handleSubmit}>
+          <div>
+            <label>사용자 이름</label>
+            <input
+              type="text"
+              placeholder="홍길동"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
+
+          <div>
+            <label>생년월일</label>
+            <input
+              type="date" // 달력 UI로 선택할 수 있게 설정 (YYYY-MM-DD 형식으로 관리됨)
+              value={birthdate}
+              onChange={(e) => setBirthdate(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
+
           <div>
             <label>이메일 주소</label>
             <input
@@ -83,7 +101,6 @@ const LoginScreen = () => {
             <label>비밀번호</label>
             <input
               type="password"
-              className="login-input"
               placeholder="비밀번호를 입력하세요"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -94,17 +111,17 @@ const LoginScreen = () => {
           {errorMessage && <p className="error-text">⚠️ {errorMessage}</p>}
 
           <button type="submit" disabled={isLoading}>
-            {isLoading ? "로그인 중..." : "로그인"}
+            {isLoading ? "가입 처리 중..." : "회원가입"}
           </button>
         </form>
 
         <div>
-          <span> 아직 계정이 없으신가요?</span>
-          <Link to="/signup">회원가입</Link>
+          <span>이미 계정이 있으신가요? </span>
+          <Link to="/login">로그인하기</Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default LoginScreen;
+export default SignupScreen;
