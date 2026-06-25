@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import MyLikedBooks from "../components/MyLikedBooks";
+import MyReviews from "../components/MyReviews";
+import MyPageSidebar from "../components/MyPageSidebar";
+import ProfileEdit from "../components/ProfileEdit";
 
 function MyPageScreen() {
-  // 1. 현재 어떤 탭이 선택되었는지 관리하는 상태 (기본값: 좋아요 한 도서)
   const [activeTab, setActiveTab] = useState("likedBooks");
 
-  // 2. activeTab 값에 따라 파란색 박스(우측 컨텐츠)에 렌더링할 컴포넌트를 결정하는 함수
   const renderContent = () => {
     switch (activeTab) {
       case "likedBooks":
@@ -31,4 +33,27 @@ function MyPageScreen() {
   );
 }
 
-export default MypageScreen;
+const styles = {
+  myPageContainer: {
+    display: "flex",
+    width: "100%",
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: "20px",
+    gap: "20px",
+  },
+  sidebarBox: {
+    flex: 1,
+    padding: "20px",
+    // border: "2px solid blue",
+    borderRight: "2px solid #e0e0e0",
+  },
+  contentBox: {
+    flex: 2,
+    // border: "2px solid blue",
+    borderRadius: "8px",
+    padding: "20px",
+  },
+};
+
+export default MyPageScreen;
