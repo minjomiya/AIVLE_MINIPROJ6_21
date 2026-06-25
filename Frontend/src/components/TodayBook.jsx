@@ -37,7 +37,7 @@ function TodayBook({ books }) {
 
   return (
     <section className="today-book-section">
-      <p className="today-book-heading">📚 오늘의 책</p>
+      <p className="today-book-heading">📖 오늘의 책</p>
       <div
         className="today-book-card"
         onClick={() => navigate(`/infobook/${todayBook.id}`)}
